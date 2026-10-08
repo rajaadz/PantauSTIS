@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/**
- * logout.php
- * ---------------------------------------------------------------------
- * Menghancurkan sesi admin lalu kembali ke halaman login. Tidak
- * merender apa pun -- murni aksi, dipanggil lewat tombol "Logout" di
- * header (kelola_data.php) atau link langsung.
- * ---------------------------------------------------------------------
- */
-
 require_once __DIR__ . '/config/session.php';
 
 $_SESSION = [];
