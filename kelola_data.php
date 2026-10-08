@@ -353,7 +353,6 @@ function prodi_theme(string $kodeProdi): array
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    /* Font khusus HANYA untuk logo (PantauSTIS / Tracker SPMB STIS). Font lain tetap default. */
     if (window.tailwind) {
       tailwind.config = {
         theme: {
@@ -374,7 +373,7 @@ function prodi_theme(string $kodeProdi): array
     <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
       <a href="dashboard.html" class="flex items-center gap-2.5">
         <span class="flex h-11 w-11 items-center justify-center rounded-lg p-1 shadow-sm ring-1 ring-slate-800">
-          <img src="assets/img/logo PantauSTIS.png" alt="Logo PantauSTIS" class="h-full w-full object-contain">
+          <img src="assets/img/Logo PantauSTIS.png" alt="Logo PantauSTIS" class="h-full w-full object-contain">
         </span>
         <span class="leading-tight">
           <span class="font-brand block text-sm font-semibold text-white">PantauSTIS</span>
