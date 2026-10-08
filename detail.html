@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PantauSTIS — Detail Riwayat Nilai</title>
+  <meta name="description" content="Riwayat nilai SKD dan Matematika per tahun untuk satu program studi dan provinsi.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    /* Font khusus HANYA untuk logo (PantauSTIS / Tracker SPMB STIS). Font lain tetap default. */
+    if (window.tailwind) {
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              brand: ['"Space Grotesk"', 'ui-sans-serif', 'system-ui', 'sans-serif']
+            }
+          }
+        }
+      };
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+</head>
+<body data-page="detail" class="min-h-screen bg-slate-50 font-sans text-slate-900 antialiased">
+
+  <!-- ======================= HEADER ======================= -->
+  <header class="sticky top-0 z-30 border-b border-slate-800 bg-slate-900">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+      <a href="dashboard.html" class="flex items-center gap-2.5">
+        <span class="flex h-11 w-11 items-center justify-center rounded-lg p-1 shadow-sm ring-1 ring-slate-800">
+          <img src="assets/img/logo PantauSTIS.png" alt="Logo PantauSTIS" class="h-full w-full object-contain">
+        </span>
+        <span class="leading-tight">
+          <span class="font-brand block text-sm font-semibold text-white">PantauSTIS</span>
+          <span class="font-brand block text-[11px] text-slate-400">Tracker SPMB STIS</span>
+        </span>
+      </a>
+      <nav class="hidden items-center gap-6 text-sm font-medium sm:flex">
+        <a href="dashboard.html" class="pb-[18px] pt-[18px] text-slate-300 hover:text-white">Dashboard</a>
+        <a href="bandingkan.html" class="pb-[18px] pt-[18px] text-slate-300 hover:text-white">Bandingkan</a>
+        <a href="mailto:estiningtyas.leaf@gmail.com?subject=Pertanyaan%20soal%20PantauSTIS" class="pb-[18px] pt-[18px] text-slate-300 hover:text-white">Hubungi Kami</a>
+      </nav>
+      <div id="authSlot" class="flex items-center gap-3 text-xs">
+        <a href="login.php" class="rounded-lg border border-slate-700 px-3 py-1.5 font-medium text-slate-300 transition hover:bg-slate-800">Login Admin</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================= BREADCRUMB ======================= -->
+  <div class="border-b border-slate-200 bg-white">
+    <div class="mx-auto max-w-7xl px-4 py-3 text-sm text-slate-500 sm:px-6 lg:px-8">
+      <a href="dashboard.html" class="hover:text-blue-600">Dashboard</a>
+      <span class="mx-1.5">/</span>
+      <a href="javascript:history.back()" class="hover:text-blue-600">Tabel Pesaing</a>
+      <span class="mx-1.5">/</span>
+      <span class="font-medium text-slate-700">Detail Riwayat Nilai</span>
+    </div>
+  </div>
+
+  <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+
+    <!-- ======================= PAGE TITLE + TABS ======================= -->
+    <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <h1 id="pageHeading" class="text-2xl font-semibold tracking-tight text-slate-900">Memuat...</h1>
+        <p class="mt-1 text-sm text-slate-500">Riwayat nilai per tahun untuk kombinasi program studi dan provinsi ini.</p>
+      </div>
+
+      <div class="inline-flex rounded-lg border border-slate-200 bg-white p-1 shadow-sm" role="tablist">
+        <button type="button" id="tabSkd" role="tab" aria-selected="true"
+          class="rounded-md bg-blue-600 px-4 py-1.5 text-sm font-medium text-white transition">SKD</button>
+        <button type="button" id="tabMatematika" role="tab" aria-selected="false"
+          class="rounded-md bg-white px-4 py-1.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50">Matematika</button>
+      </div>
+    </div>
+
+    <p id="detailNotFoundState" class="hidden rounded-xl border border-dashed border-slate-300 bg-white py-10 text-center text-sm text-slate-500"></p>
+
+    <!-- ======================= TREN NILAI RATA-RATA SKD ======================= -->
+    <div id="trenSkdCard" data-chart-card class="mb-6 hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <div class="mb-4">
+        <h2 class="text-sm font-semibold text-slate-800">Tren Nilai Rata-rata SKD per Tahun</h2>
+        <p class="mt-0.5 text-xs text-slate-500">Diambil dari data nilai SKD yang sudah diinput untuk kombinasi program studi dan provinsi ini.</p>
+      </div>
+      <div class="h-64">
+        <canvas id="trenSkdChart"></canvas>
+      </div>
+    </div>
+
+    <!-- ======================= YEAR CARDS ======================= -->
+    <div id="yearCardsContainer" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="skeleton h-64 rounded-2xl"></div>
+      <div class="skeleton h-64 rounded-2xl"></div>
+      <div class="skeleton h-64 rounded-2xl"></div>
+    </div>
+
+  </main>
+
+  <footer class="mt-12 border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+    PantauSTIS &middot; Tracker SPMB STIS &middot; Data diambil dari laman resmi <a href="https://spmb.stis.ac.id" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">spmb.stis.ac.id</a>.
+  </footer>
+
+  <script src="assets/js/live-search.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

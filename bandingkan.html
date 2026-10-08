@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PantauSTIS — Bandingkan Data</title>
+  <meta name="description" content="Bandingkan beberapa kombinasi program studi, provinsi, dan tahun secara berdampingan.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    /* Font khusus HANYA untuk logo (PantauSTIS / Tracker SPMB STIS). Font lain tetap default. */
+    if (window.tailwind) {
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              brand: ['"Space Grotesk"', 'ui-sans-serif', 'system-ui', 'sans-serif']
+            }
+          }
+        }
+      };
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+</head>
+<body data-page="bandingkan" class="min-h-screen bg-slate-50 font-sans text-slate-900 antialiased">
+
+  <!-- ======================= HEADER ======================= -->
+  <header class="sticky top-0 z-30 border-b border-slate-800 bg-slate-900">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+      <a href="dashboard.html" class="flex items-center gap-2.5">
+        <span class="flex h-11 w-11 items-center justify-center rounded-lg p-1 shadow-sm ring-1 ring-slate-800">
+          <img src="assets/img/logo PantauSTIS.png" alt="Logo PantauSTIS" class="h-full w-full object-contain">
+        </span>
+        <span class="leading-tight">
+          <span class="font-brand block text-sm font-semibold text-white">PantauSTIS</span>
+          <span class="font-brand block text-[11px] text-slate-400">Tracker SPMB STIS</span>
+        </span>
+      </a>
+      <nav class="hidden items-center gap-6 text-sm font-medium sm:flex">
+        <a href="dashboard.html" class="pb-[18px] pt-[18px] text-slate-300 hover:text-white">Dashboard</a>
+        <a href="bandingkan.html" class="border-b-2 border-blue-500 pb-[18px] pt-[18px] text-white">Bandingkan</a>
+        <a href="mailto:estiningtyas.leaf@gmail.com?subject=Pertanyaan%20soal%20PantauSTIS" class="pb-[18px] pt-[18px] text-slate-300 hover:text-white">Hubungi Kami</a>
+      </nav>
+      <div id="authSlot" class="flex items-center gap-3 text-xs">
+        <a href="login.php" class="rounded-lg border border-slate-700 px-3 py-1.5 font-medium text-slate-300 transition hover:bg-slate-800">Login Admin</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+
+    <!-- ======================= PAGE TITLE ======================= -->
+    <div class="mb-6">
+      <h1 class="text-2xl font-semibold tracking-tight text-slate-900">Bandingkan Data</h1>
+      <p class="mt-1 text-sm text-slate-500">Pilih program studi, provinsi, dan tahun yang ingin dibandingkan (maksimal 5 baris).</p>
+    </div>
+
+    <!-- ======================= SELEKTOR ======================= -->
+    <div class="mb-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div class="flex flex-wrap items-end gap-3">
+        <div class="min-w-[200px] flex-1">
+          <label for="bdProdi" class="mb-1.5 block text-xs font-medium text-slate-500">Program Studi</label>
+          <select id="bdProdi"
+            class="w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-3 pr-8 text-sm text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100">
+          </select>
+        </div>
+        <div class="min-w-[220px] flex-1">
+          <label for="bdProvinsi" class="mb-1.5 block text-xs font-medium text-slate-500">Provinsi</label>
+          <select id="bdProvinsi"
+            class="w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-3 pr-8 text-sm text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100">
+          </select>
+        </div>
+        <div class="min-w-[140px]">
+          <label for="bdTahun" class="mb-1.5 block text-xs font-medium text-slate-500">Tahun</label>
+          <select id="bdTahun"
+            class="w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-3 pr-8 text-sm text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100">
+          </select>
+        </div>
+        <button type="button" id="bdTambah"
+          class="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700">
+          + Tambahkan
+        </button>
+      </div>
+      <p id="bdSelectorNotice" class="mt-3 hidden rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-700"></p>
+    </div>
+
+    <!-- ======================= TABEL PERBANDINGAN ======================= -->
+    <div class="mb-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div class="border-b border-slate-100 p-4">
+        <h2 class="text-sm font-semibold text-slate-700">Baris Perbandingan</h2>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-slate-100">
+          <thead class="bg-slate-50">
+            <tr>
+              <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Prodi</th>
+              <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Provinsi</th>
+              <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Tahun</th>
+              <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">Pendaftar</th>
+              <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">Kuota</th>
+              <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">% Lolos</th>
+              <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">Rerata SKD</th>
+              <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">Rerata Mtk</th>
+              <th scope="col" class="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wide text-slate-500">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="bdTableBody" class="bg-white"></tbody>
+        </table>
+      </div>
+      <p id="bdEmptyState" class="px-4 py-10 text-center text-sm text-slate-500">
+        Belum ada baris yang dibandingkan. Pilih prodi, provinsi, dan tahun di atas, lalu klik &ldquo;Tambahkan&rdquo;.
+      </p>
+    </div>
+
+    <!-- ======================= GRAFIK PERBANDINGAN ======================= -->
+    <div id="bdChartCard" data-chart-card class="hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <div class="mb-4">
+        <h2 class="text-sm font-semibold text-slate-800">Perbandingan Rata-rata Nilai</h2>
+        <p class="mt-0.5 text-xs text-slate-500">SKD (skala 0&ndash;550) dan Matematika (skala 0&ndash;100) untuk setiap baris yang dipilih di atas.</p>
+      </div>
+      <div class="h-72">
+        <canvas id="bdChart"></canvas>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="mt-12 border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+    PantauSTIS &middot; Tracker SPMB STIS &middot; Data diambil dari laman resmi <a href="https://spmb.stis.ac.id" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">spmb.stis.ac.id</a>.
+  </footer>
+
+  <script src="assets/js/live-search.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
