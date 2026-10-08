@@ -60,7 +60,7 @@ Skema database lengkap (termasuk data dummy 2023–2025) ada di
    pengguna, cuma dicatat lewat `error_log`).
 4. Taruh folder `pantaustis-frontend/` di dalam `htdocs` XAMPP (atau
    document root server PHP Anda), lalu buka
-   `http://localhost/PantauSTIS2/index.html`.
+   `http://localhost/PantauSTIS/index.html`.
 5. Di `assets/js/app.js`, ubah `CONFIG.useMockData` dari `true` jadi
    `false` (lihat bagian selanjutnya) supaya dashboard/pesaing/detail/
    bandingkan memanggil `api/*.php` alih-alih file JSON mock.
