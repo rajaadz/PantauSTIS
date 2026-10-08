@@ -1,0 +1,76 @@
+/*
+  style.css
+  ---------------------------------------------------------------------
+  Pelengkap di luar utility class Tailwind: hal-hal kecil yang lebih
+  rapi ditulis sebagai CSS biasa (scrollbar, animasi halus, dan warna
+  brand yang dipakai berulang lewat CSS custom property).
+  ---------------------------------------------------------------------
+*/
+
+:root {
+  --brand-50: #eff6ff;
+  --brand-600: #2563eb;
+  --brand-700: #1d4ed8;
+}
+
+body {
+  background-color: #f8fafc; /* slate-50 */
+}
+
+/* Scrollbar tipis khusus untuk panel suggestion & tabel yang bisa discroll */
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1; /* slate-300 */
+  border-radius: 9999px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Animasi muncul halus untuk panel live-search & modal deskripsi */
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-down {
+  animation: fade-in-down 120ms ease-out;
+}
+
+/* Highlight sesaat pada baris tabel / kartu yang jadi tujuan hasil pencarian */
+@keyframes flash-highlight {
+  0%, 100% { background-color: transparent; }
+  30% { background-color: var(--brand-50); }
+}
+
+.flash-highlight {
+  animation: flash-highlight 1200ms ease-out;
+}
+
+/* Skeleton loading sederhana, dipakai sebelum data pertama kali dirender */
+.skeleton {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 37%, #e2e8f0 63%);
+  background-size: 400% 100%;
+  animation: skeleton-loading 1.4s ease infinite;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
