@@ -2,24 +2,9 @@
 
 declare(strict_types=1);
 
-/**
- * login.php
- * ---------------------------------------------------------------------
- * Halaman login admin. Validasi dilakukan ke tabel `admin` lewat PDO
- * prepared statement (aman dari SQL Injection) + password_verify()
- * terhadap password_hash yang tersimpan (tidak pernah menyimpan/
- * membandingkan teks password asli).
- *
- * Kredensial seed bawaan (lihat tracker_spmb_stis.sql bagian 4.1):
- *   username : admin
- *   password : Admin#2026
- * ---------------------------------------------------------------------
- */
-
 require_once __DIR__ . '/config/session.php';
 require_once __DIR__ . '/config/koneksi.php';
 
-// Sudah login -> langsung ke halaman kelola data, tidak perlu login ulang.
 if (is_logged_in()) {
     header('Location: kelola_data.php');
     exit;
@@ -50,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             && password_verify($password, $admin['password_hash']);
 
         if ($valid) {
-            // Cegah session fixation: buat ID sesi baru setelah login berhasil.
             session_regenerate_id(true);
             $_SESSION['admin_id']       = (int) $admin['id_admin'];
             $_SESSION['admin_username'] = $admin['username'];
@@ -83,7 +67,6 @@ $csrfToken = csrf_token();
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    /* Font khusus HANYA untuk logo (PantauSTIS / Tracker SPMB STIS). Font lain tetap default. */
     if (window.tailwind) {
       tailwind.config = {
         theme: {
@@ -103,7 +86,7 @@ $csrfToken = csrf_token();
     <div class="mx-auto flex max-w-7xl items-center px-4 py-3 sm:px-6 lg:px-8">
       <a href="index.html" class="flex items-center gap-2.5">
         <span class="flex h-11 w-11 items-center justify-center rounded-lg p-1 shadow-sm ring-1 ring-slate-800">
-          <img src="assets/img/logo PantauSTIS.png" alt="Logo PantauSTIS" class="h-full w-full object-contain">
+          <img src="assets/img/Logo PantauSTIS.png" alt="Logo PantauSTIS" class="h-full w-full object-contain">
         </span>
         <span class="leading-tight">
           <span class="font-brand block text-sm font-semibold text-slate-900">PantauSTIS</span>
